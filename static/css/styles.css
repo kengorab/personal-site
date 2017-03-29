@@ -1,0 +1,26 @@
+h1 {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+ul.sidebar-nav {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.sidebar .container p {
+  font-size: 14px;
+}
+
+.post .post-date {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+a.label {
+  padding: .2em .6em;
+}
+
+pre {
+  overflow: scroll;
+}
+pre code {
+  font-size: 85%;
+}

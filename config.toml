@@ -1,0 +1,22 @@
+title = "Blog"
+languageCode = "en-us"
+theme = "hyde-x"
+disqusShortName = "kenrg-blog"
+
+[author]
+name = "Ken Gorab"
+
+[taxonomies]
+category = "categories"
+
+[params]
+theme = "theme-base-0d"
+highlight = "darcula"
+customCSS = "/css/styles.css"
+
+hideReadingTime = true
+
+googleAnalytics = "UA-96470347-1"
+
+github = "https://github.com/kengorab"
+linkedin = "https://www.linkedin.com/in/kenneth-gorab-08862646"
