@@ -1,5 +1,6 @@
 title = "Blog"
 languageCode = "en-us"
+baseurl = "http://kenrg.co/"
 theme = "hyde-x"
 disqusShortName = "kenrg-blog"
 
@@ -14,6 +15,7 @@ theme = "theme-base-0d"
 highlight = "darcula"
 customCSS = "/css/styles.css"
 
+defaultKeywords = "Ken,Gorab,software,engineer,blog"
 hideReadingTime = true
 
 googleAnalytics = "UA-96470347-1"

@@ -4,7 +4,14 @@ title: Compiling Kotlin to Javascript
 categories:
   - kotlin
   - javascript
-keywords: []
+keywords:
+  - kotlin
+  - kotlin 1.1
+  - javascript
+  - tutorial
+  - template
+  - boilerplate
+  - getting started
 
 ---
 
