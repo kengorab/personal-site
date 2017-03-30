@@ -20,6 +20,7 @@ a.label {
 
 pre {
   overflow: scroll;
+  white-space: pre;
 }
 pre code {
   font-size: 85%;
