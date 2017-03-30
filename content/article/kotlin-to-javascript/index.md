@@ -134,7 +134,7 @@ appear with respect to the Kotlin, and not the generated, messy Javascript. It's
 
 Okay, that was a lot of setup and explanation around the `build.gradle` file, let's get onto writing some Kotlin!
 
-Honestly, this is the part which I'll talk about the least, since goal here is to get everything up and running and not to explore
+Honestly, this is the part which I'll talk about the least, since my goal here is to get everything up and running and not to explore
 everything that we can do just yet. Disappointing maybe, but I'll elaborate more in future posts.
 
 Since there's nothing in the project except for the gradle files, let's create a Kotlin file, using the standard project organization
