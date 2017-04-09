@@ -28,7 +28,11 @@ advantage of language features like [function literals with receivers](https://k
 So, using Kotlin and Kotlinx.html, let's try to write the game Snake and run it in the browser. All of the code will be available on
 my github, and there will be a tag for steps along the way, in case you wanted to try it for yourself.
 
-This is going to be a multi-part article, so let's get started! 🐍🐍🐍
+If you want to check out the final result and play the game for yourself, [check it out](/projects/snake-kotlin-js)!
+
+This is going to be a multi-part article, so let's get started!
+
+🐍🐍🐍
 
 # Step 0: Project Setup
 
