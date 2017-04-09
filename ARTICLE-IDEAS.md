@@ -5,6 +5,8 @@ A list of potential topics to write about, in no particular order
 
 ◻️ Calling a javascript library from kotlin in compiled-to-js kotlin code
 
+◻️ Creating a Snake game using kotlin-js
+
 ◻️ Spring middleware?
 
 ◻️ JVM Bytecode series? (I already have the ideas prepared, I just need to flesh them out)
