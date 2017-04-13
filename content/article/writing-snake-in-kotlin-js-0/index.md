@@ -194,7 +194,7 @@ fun main(args: Array<String>) {
 The first thing we do is get a handle on `document.body`. This corresponds to the HTML node created by the `<body>` tag. In our
 `index.html` file, this is empty and has a class of `'container'`. The `.append` function is an [extension function](https://kotlinlang.org/docs/reference/extensions.html#extension-functions)
 on the `Node` class, of which `document.body` is an instance. Actually, it is a nullable instance, which is why we need the
-null-safe operator (`?.`) when calling `apply`. The `apply` function has the following signature:
+null-safe operator (`?.`) when calling `append`. The `append` function has the following signature:
 
 ```kotlin
 fun Node.append(block : TagConsumer<HTMLElement>.() -> Unit) : List<HTMLElement>
@@ -210,7 +210,7 @@ Within the function/closure/block (I've seen it called all three) we call the `h
 fun TagConsumer<HTMLElement>.h1(classes : String? = null, block : H1.() -> Unit = {}) : HTMLHeadingElement
 ```
 
-As expected, since it's executed within the block passed to `body.apply`, the `h1` function is a function on `TagConsumer<HtmlElement>` 
+As expected, since it's executed within the block passed to `body.append`, `h1` is a function on `TagConsumer<HtmlElement>` 
 (an extension function to be precise, which is how all of these functions seem to be implemented). We could have
 equivalently written our `main` function as follows, with the same exact result:
 
@@ -222,7 +222,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-where the `this` keyword in `this.h1` refers to the `TagConsumer<HTMLElement>` instance that the block passed to `.apply` will be
+where the `this` keyword in `this.h1` refers to the `TagConsumer<HTMLElement>` instance that the block passed to `.append` will be
 executing within. This is definitely on the more confusing side, but I encourage you to read through the Kotlin documentation for
 [extension functions](https://kotlinlang.org/docs/reference/extensions.html#extension-functions) and [function literals with receiver](https://kotlinlang.org/docs/reference/lambdas.html#function-literals-with-receiver)
 and it should help. Also, playing around with the [HTML Builder example](https://try.kotlinlang.org/#/Examples/Longer%20examples/HTML%20Builder/HTML%20Builder.kt)
