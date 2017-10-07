@@ -9,4 +9,8 @@ A list of potential topics to write about, in no particular order
 
 ◻️ Spring middleware?
 
+ "Let's Write Redux!"
+ 
+ "Triangle Max Sum in Different Languages"
+
 ◻️ JVM Bytecode series? (I already have the ideas prepared, I just need to flesh them out)
