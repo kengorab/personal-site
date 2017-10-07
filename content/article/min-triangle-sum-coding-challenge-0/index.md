@@ -1,20 +1,19 @@
 ---
-date: 2017-10-06T21:18:45-04:00
+date: 2017-10-07T21:09:45-04:00
 title: Min Triangle Sum (Coding Challenge)
 categories:
   - coding challenge
   - javascript
   - kotlin
   - java
-  - clojure
 keywords:
   - javascript
   - kotlin
   - java
-  - clojure
   - functional programming
   - language comparison
   - interview questions
+  - coding challenge
 
 ---
 
@@ -87,8 +86,157 @@ finished, and ask you something along the lines of "okay, but what happens when 
 Well, 10,000,000 isn't an exact [Triangular Number](https://en.wikipedia.org/wiki/Triangular_number),
 but let's do some rounding. (`10,000,000 = (n)(n + 1) / 2` yields approximately 4,472 rows in this triangle). That means
 that, in order to determine which path results in the minimum sum, we'd need to make `2^4471` calculations (which is a
-number several orders of magnitude larger than the total number of particles in the universe (approximately `10*78`)).
+number several orders of magnitude larger than the total number of particles in the universe).
 
-Let's try a different approach.
+Let's try a different approach. Rather than starting at the top and working our way down, let's start at the bottom and
+work our way up.
 
-Rather than starting at the top and working our way down, let's start at the bottom and work our way up.
+Let's start by allocating a new array, which consists of the elements of the last row. This is well within the rules of
+the "bonus points", so let's create `[4, 1, 8, 3]`. This array will represent the best (minimum) possible sum after each
+iteration of the algorithm. Starting from the second-to-last row in the triangle, we compare the sums of each element and
+the two adjacent numbers in the lower row.
+
+For example, starting at the `6`, we could either sum it with the `4` or the `1`; we'd pick the `1` since it results 
+in the minimal value. We'd then do the same for the `5` and the `7` in that row. So, after one iteration of our algorithm,
+comparing sums and updating the array, we're left with the array `[7, 6, 10, 3]` (each round will update 1 item fewer in
+the array each time, which is why the 3) is left over from the start.
+
+Running the algorithm again, we are comparing `7 + 3` with `6 + 3`, so we take `9` and place that in the first element of
+the array; then we compare `6 + 4` with `10 + 4`, so we take `10` and place it in the second position in the array. Now,
+the array looks like `[9, 10, 10, 3]`. Note again that the `10` and `3` are left over from last time. We _could_ alter
+the algorithm to replace these with `null` or something to make it less confusing, but just know that we only care about
+the first `n` elements of the array, where `n` is the row in the triangle we're currently processing.
+
+The final run of the algorithm is comparing `9 + 2` with `10 + 2`, so we take `11` and put it in the first place in the
+array. Now that we've run out of rows in the triangle, the 0th element of the array is our solution, and if we trace back
+the values we had summed along the way to arrive at this value, we see it's `2 + 3 + 5 + 1`.
+
+This algorithm will iterate over the number of rows in the triangle, and in each row iterate over the number of elements.
+Therefore, its runtime complexity is `O(n^2)`, which is nothing compared to the exponential runtime in the naïve approach.
+
+## Implementation (Javascript)
+
+Now that we've talked through the solution at a high level, let's see what this looks like in code. I'm going to write
+this solution in a few languages, just for some variety. If you're a functional programmer, you were reading the second
+approach and thinking "wow, this sounds like `reduce` (AKA `foldl`)" then you're ahead of the game! I'll be using `reduce`
+in my javascript solution.
+
+```js
+function minTriangleSum(triangleRows) {
+  const triangle = triangleRows.reverse();
+  const [lastRow, ...rows] = triangle;
+  const results = rows.reduce(
+    (acc, row) => {
+      return row.map((item, index) => {
+        return item + Math.min(acc[index], acc[index + 1]);
+      });
+    },
+    lastRow
+  );
+  return results[0];
+}
+
+const triangle = [
+     [2],
+    [3, 4],
+   [6, 5, 7],
+  [4, 1, 8, 3]
+];
+
+console.log(minTriangleSum(triangle));  // 11
+
+```
+
+Now _technically_ this solution does allocate more space than a single `O(n)` array, but I wanted to talk about the
+functional, declarative solution first, since it's a more direct translation of how I like to think about these problems.
+Note also that each iteration of the reduction also returns an array with the correct number of elements in it (when I
+walked through the solution conceptually a moment ago, I had mentioned that the resulting array would contain extra elements
+carried over from previous iterations).
+
+Let's see what an imperative solution looks like, which doesn't allocate anything other than the `O(n)` requirement for
+the bonus points:
+
+```js
+function minTriangleSum(triangleRows) {
+  let totals = [];
+  const lastRow = triangleRows[triangleRows.length - 1];
+  for (let i = 0; i < lastRow.length; i++) {
+    totals.push(lastRow[i]);
+  }
+  
+  // The block above could be replaced with:
+  //   let totals = [...triangleRows[triangleRows.length - 1]];
+
+  // Iterate in reverse
+  for (let i = triangleRows.length - 2; i >= 0; i--) {
+    const row = triangleRows[i];
+    for (let j = 0; j < row.length; j++) {
+      totals[j] = row[j] + Math.min(totals[j], totals[j + 1]);
+    }
+  }
+  return totals[0];
+}
+
+const triangle = [
+     [2],
+    [3, 4],
+   [6, 5, 7],
+  [4, 1, 8, 3]
+];
+
+console.log(minTriangleSum(triangle));
+
+```
+
+This reads more like the javascript of yore, without making use of the `reduce` or `map` functions. As I mentioned in
+the comment in the code, the first block could have been replaced with a single line but I felt that, if I was going
+to be using `for`-loops anyway, I may as well go ahead and not take advantage of _any_ of the features of modern
+javascript. 
+
+## Implementation (Java)
+
+The imperative java implementation isn't terribly different from the javascript one:
+
+```java
+int minPathSum(int[][] triangleRows) {
+    int numRows = triangleRows.length;
+    int[] totals = new int[numRows];
+    System.arraycopy(triangleRows[numRows - 1], 0, totals, 0, triangleRows[numRows - 1].length);
+
+    // Iterate in reverse
+    for (int i = triangleRows.length - 2; i >= 0; i--) {
+        int[] upperRow = triangleRows[i];
+        for (int j = 0; j < upperRow.length; j++) {
+            totals[j] = upperRow[j] + Math.min(totals[j], totals[j + 1]);
+        }
+    }
+
+    return totals[0];
+}
+```
+
+The call to `System.arraycopy` is a [more performant](https://stackoverflow.com/a/18639042) (albeit slightly more
+obfuscated) way to copy arrays in java rather than using a `for`-loop, since it's a call into native VM code, which copies
+blocks of memory rather than copying single array elements one at a time.
+
+Trying to write the more declarative solution in java, using `Streams`, I got annoyed. See, while the java language
+developers made a good effort to bring some aspects of functional/declarative programming to java in Java 8, there is
+no `mapIndexed` method on a `Stream`, so in order to write the same algorithm, you'd need to have a `for`-loop within
+the `reduce` function, which is hideous. In Kotlin for example, a language with an incredibly robust collections API,
+the `mapIndexed` function exists. Also, there's a `foldRight` function as well, which saves us from first having to
+reverse the rows manually. Seriously, the Kotlin language developers aren't slouches, take a look at the 
+[documentation for their collections APIs](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html)
+and imagine how much of an improvement it is over java's.
+
+# Conclusion
+
+So that's it! There's nothing spectacular or particularly groundbreaking in this post, I just wanted to talk for a bit
+about coding challenges / SWE interview questions, and why they're important. And more importantly, why they should be
+viewed as a fun challenge rather than a test or a chore.
+
+I definitely recommend checking out the problems on
+[ProgramCreek](https://www.programcreek.com/2012/11/top-10-algorithms-for-coding-interview/) (which I had linked above
+earlier on), and try to do one or two of them a day. They're important to do, even if you're not thinking of changing
+jobs anytime soon.
+
+If you have any questions/comments, please feel free to leave them below. Thanks for reading!
